@@ -44,6 +44,8 @@ class signIn(QWidget, signinUI):
 				global user
 				user = username
 				player.signin_btn.setText('Sign out')
+				self.username.clear()
+				self.password.clear()
 				db.close()
 				self.close()
 if __name__ == '__main__':
