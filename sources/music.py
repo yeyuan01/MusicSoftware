@@ -1,0 +1,97 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'music.ui'
+#
+# Created by: PyQt5 UI code generator 5.13.0
+#
+# WARNING! All changes made in this file will be lost!
+
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+class playerUI(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(946, 861)
+        self.signin_btn = QtWidgets.QPushButton(Form)
+        self.signin_btn.setGeometry(QtCore.QRect(840, 10, 93, 28))
+        self.signin_btn.setObjectName("signin_btn")
+        self.layoutWidget = QtWidgets.QWidget(Form)
+        self.layoutWidget.setGeometry(QtCore.QRect(40, 50, 861, 811))
+        self.layoutWidget.setObjectName("layoutWidget")
+        self.gridLayout = QtWidgets.QGridLayout(self.layoutWidget)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setObjectName("gridLayout")
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
+        self.verticalLayout.addItem(spacerItem)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.pre_btn = QtWidgets.QPushButton(self.layoutWidget)
+        self.pre_btn.setObjectName("pre_btn")
+        self.horizontalLayout.addWidget(self.pre_btn)
+        self.play_btn = QtWidgets.QPushButton(self.layoutWidget)
+        self.play_btn.setObjectName("play_btn")
+        self.horizontalLayout.addWidget(self.play_btn)
+        self.next_btn = QtWidgets.QPushButton(self.layoutWidget)
+        self.next_btn.setObjectName("next_btn")
+        self.horizontalLayout.addWidget(self.next_btn)
+        self.mode_btn = QtWidgets.QPushButton(self.layoutWidget)
+        self.mode_btn.setObjectName("mode_btn")
+        self.horizontalLayout.addWidget(self.mode_btn)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.label = QtWidgets.QLabel(self.layoutWidget)
+        self.label.setObjectName("label")
+        self.horizontalLayout_3.addWidget(self.label)
+        self.horizontalSlider = QtWidgets.QSlider(self.layoutWidget)
+        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
+        self.horizontalSlider.setObjectName("horizontalSlider")
+        self.horizontalLayout_3.addWidget(self.horizontalSlider)
+        self.label_2 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_2.setObjectName("label_2")
+        self.horizontalLayout_3.addWidget(self.label_2)
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
+        self.verticalLayout.addItem(spacerItem1)
+        self.music_list = QtWidgets.QListWidget(self.layoutWidget)
+        self.music_list.setObjectName("music_list")
+        self.verticalLayout.addWidget(self.music_list)
+        self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.splitter = QtWidgets.QSplitter(self.layoutWidget)
+        self.splitter.setOrientation(QtCore.Qt.Horizontal)
+        self.splitter.setObjectName("splitter")
+        self.search_bar = QtWidgets.QLineEdit(self.splitter)
+        self.search_bar.setText("")
+        self.search_bar.setObjectName("search_bar")
+        self.search_btn = QtWidgets.QPushButton(self.splitter)
+        self.search_btn.setObjectName("search_btn")
+        self.verticalLayout_2.addWidget(self.splitter)
+        self.search_list = QtWidgets.QListWidget(self.layoutWidget)
+        self.search_list.setObjectName("search_list")
+        self.verticalLayout_2.addWidget(self.search_list)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
+        self.gridLayout.addLayout(self.verticalLayout_2, 0, 1, 1, 1)
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.signin_btn.setText(_translate("Form", "Sign in"))
+        self.pre_btn.setText(_translate("Form", "pre"))
+        self.play_btn.setText(_translate("Form", "Play"))
+        self.next_btn.setText(_translate("Form", "next"))
+        self.mode_btn.setText(_translate("Form", "mode"))
+        self.label.setText(_translate("Form", "00:00"))
+        self.label_2.setText(_translate("Form", "00:00"))
+        self.search_bar.setToolTip(_translate("Form", "<html><head/><body><p>Seach song from our library</p></body></html>"))
+        self.search_btn.setText(_translate("Form", "Search"))
