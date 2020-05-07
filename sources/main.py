@@ -36,7 +36,7 @@ class signIn(QWidget, signinUI):
 		elif password == '':
 			QMessageBox.warning(self, '', 'password cannot be null', QMessageBox.Ok)
 		else:
-			db = pymysql.connect("localhost", "root", "yuanye88125385", "music")
+			db = pymysql.connect("localhost", "root", "", "music")
 			cursor = db.cursor()
 			cursor.execute('SELECT password from accounts where username = %s', username)
 			data = cursor.fetchone()
