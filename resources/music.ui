@@ -128,6 +128,24 @@
        </spacer>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QPushButton" name="select_folder">
+          <property name="text">
+           <string>select folder</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="favorite_list">
+          <property name="text">
+           <string>favorite list</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <widget class="QListWidget" name="music_list"/>
       </item>
      </layout>
