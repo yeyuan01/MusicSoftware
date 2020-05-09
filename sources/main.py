@@ -28,6 +28,7 @@ class signIn(QWidget, signinUI):
 		self.setupUi(self)
 		self.password.setEchoMode(QLineEdit.Password)
 		self.sign_in.clicked.connect(self.checkAccount)
+		self.cancel.clicked.connect(self.close)
 	def checkAccount(self):
 		username = self.username.text()
 		password = self.password.text()
