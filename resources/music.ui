@@ -55,6 +55,24 @@
        </spacer>
       </item>
       <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Current Song: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="CurrentSongName">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QPushButton" name="pre_btn">
