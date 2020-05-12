@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtMultimedia import *
 from music import *
 from sign_in import *
+import random
 import pymysql
 user = ''
 class musicPlayer(QWidget, playerUI):
@@ -25,6 +26,8 @@ class musicPlayer(QWidget, playerUI):
 		self.timer.start(1000)
 		self.timer.timeout.connect(self.playByMode)
 		self.mode_btn.clicked.connect(self.changeMode)
+		self.next_btn.clicked.connect(self.nextMusic)
+		self.pre_btn.clicked.connect(self.preMusic)
 		self.horizontalSlider.sliderMoved[int].connect(lambda: self.player.setPosition(self.horizontalSlider.value()))
 		self.play_btn.clicked.connect(self.playMusic)
 		self.music_list.itemDoubleClicked.connect(self.doubleClickPlay)
@@ -55,10 +58,47 @@ class musicPlayer(QWidget, playerUI):
 		self.label.setText(time.strftime('%M:%S', time.localtime(self.player.position() / 1000)))
 		self.label_2.setText(time.strftime('%M:%S', time.localtime(self.player.duration() / 1000)))
 		if self.mode_btn.text() == 'All Repeat' and (not self.is_pause) and (not self.is_switching):
-			if self.music_list == 0:
+			if self.music_list.count() == 0:
 				return
 			if self.player.position() == self.player.duration():
 				self.nextMusic()
+		elif self.mode_btn.text() == 'Order' and (not self.is_pause) and (not self.is_switching):
+			if self.music_list.count() == 0 or self.music_list.currentRow() == self.music_list.count():
+				return
+			if self.player.position() == self.player.duration():
+				self.nextMusic()
+		elif self.mode_btn.text() == 'Shuffle' and (not self.is_pause) and (not self.is_switching):
+			if self.music_list.count() == 0:
+				return
+			if self.player.position() == self.player.duration():
+				self.is_switching = True
+				self.music_list.setCurrentRow(random.randint(0, self.music_list.count()-1))
+				self.setCurrentSong()
+				self.horizontalSlider.setValue(0)
+				self.playMusic()
+				self.is_switching = False
+		elif self.mode_btn.text() == 'Repeat Once' and (not self.is_pause) and (not self.is_switching):
+			if self.music_list.count() == 0:
+				return
+			if self.player.position() == self.player.duration():
+				self.is_switching = True
+				self.setCurrentSong()
+				self.horizontalSlider.setValue(0)
+				self.playMusic()
+				self.is_switching = False
+	def preMusic(self):
+		self.horizontalSlider.setValue(0)
+		if self.music_list.count() == 0:
+			QMessageBox.warning(self, '', 'No music in list', QMessageBox.Ok)
+			return
+		if self.music_list.currentRow() == 0:
+			self.music_list.setCurrentRow(self.music_list.count())
+		else:
+			self.music_list.setCurrentRow(self.music_list.currentRow() - 1)
+		self.is_switching = True
+		self.setCurrentSong()
+		self.playMusic()
+		self.is_switching = False
 	def nextMusic(self):
 		self.horizontalSlider.setValue(0)
 		if self.music_list.count() == 0:
@@ -119,8 +159,6 @@ class musicPlayer(QWidget, playerUI):
 		self.cur_song = self.song_list[self.music_list.currentRow()][-1]
 		self.CurrentSongName.setText(self.cur_song.split('/')[-1])
 		self.player.setMedia(QMediaContent(QUrl(self.cur_song)))
-	def play(self):
-		pass
 class signIn(QWidget, signinUI):
 	def __init__(self):
 		super(signIn,self).__init__()
@@ -140,7 +178,7 @@ class signIn(QWidget, signinUI):
 			cursor = db.cursor()
 			cursor.execute('SELECT password from accounts where username = %s', username)
 			data = cursor.fetchone()
-			if data[0] == password:
+			if data and data[0] == password:
 				global user
 				user = username
 				player.signin_btn.setText('Sign out')
@@ -148,6 +186,9 @@ class signIn(QWidget, signinUI):
 				self.password.clear()
 				db.close()
 				self.close()
+			else:
+				QMessageBox.warning(self, '', 'Wrong Password or Username', QMessageBox.Ok)
+				db.close()
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
 	player = musicPlayer()
