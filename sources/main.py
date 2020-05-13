@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtMultimedia import *
 from music import *
 from sign_in import *
+from sign_up import *
 import random
 import pymysql
 user = ''
@@ -159,6 +160,39 @@ class musicPlayer(QWidget, playerUI):
 		self.cur_song = self.song_list[self.music_list.currentRow()][-1]
 		self.CurrentSongName.setText(self.cur_song.split('/')[-1])
 		self.player.setMedia(QMediaContent(QUrl(self.cur_song)))
+
+class signUp(QWidget, signupUi):
+	def __init__(self):
+		super(signUp, self).__init__()
+		self.setupUi(self)
+		self.password1.setEchoMode(QLineEdit.Password)
+		self.password2.setEchoMode(QLineEdit.Password)
+		self.signup_btn.clicked.connect(self.checkCorrectness)
+	def checkCorrectness(self):
+		username = self.username.text()
+		password1 = self.password1.text()
+		password2 = self.password2.text()
+		if username == '':
+			QMessageBox.warning(self,'','user name cannot be null', QMessageBox.Ok)
+		elif password1 == '' or password2 == '':
+			QMessageBox.warning(self, '', 'password cannot be null', QMessageBox.Ok)
+		elif password1 != password2:
+			QMessageBox.warning(self, '', 'passwords must be equal', QMessageBox.Ok)
+		else:
+			db = pymysql.connect("localhost", "root", "", "music")
+			cursor = db.cursor()
+			cursor.execute('select username from accounts where username = %s', username)
+			data = cursor.fetchone()
+			if data:
+				QMessageBox.warning(self, '', 'username already exist', QMessageBox.Ok)
+				db.close()
+				return
+			else:
+				cursor.execute('insert into accounts(username, password) value(%s, %s)', (username, password1))
+				db.commit()
+				db.close()
+				QMessageBox.warning(self, '', 'account registered!', QMessageBox.Ok, self.close())
+
 class signIn(QWidget, signinUI):
 	def __init__(self):
 		super(signIn,self).__init__()
@@ -166,6 +200,9 @@ class signIn(QWidget, signinUI):
 		self.password.setEchoMode(QLineEdit.Password)
 		self.sign_in.clicked.connect(self.checkAccount)
 		self.cancel.clicked.connect(self.close)
+		self.sign_up.clicked.connect(self.show_signup)
+	def show_signup(self):
+		sign_up.show()
 	def checkAccount(self):
 		username = self.username.text()
 		password = self.password.text()
@@ -192,6 +229,7 @@ class signIn(QWidget, signinUI):
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
 	player = musicPlayer()
+	sign_up = signUp()
 	sign_in = signIn()
 	player.show()
 	sys.exit(app.exec_())
