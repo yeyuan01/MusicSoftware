@@ -191,6 +191,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="add_fav_btn">
+        <property name="text">
+         <string>add to favorite</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QListWidget" name="search_list"/>
       </item>
       <item>
