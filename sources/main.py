@@ -11,6 +11,7 @@ from music import *
 from sign_in import *
 from sign_up import *
 import random
+import requests
 import pymysql
 user = ''
 class musicPlayer(QWidget, playerUI):
@@ -35,6 +36,64 @@ class musicPlayer(QWidget, playerUI):
 		self.cur_path = os.path.abspath(os.path.dirname(__file__))
 		self.select_folder.clicked.connect(self.openDir)
 		self.signin_btn.clicked.connect(self.showSignIn)
+		self.search_btn.clicked.connect(self.search)
+		self.add_fav_btn.clicked.connect(self.addFav)
+		self.favorite_list.clicked.connect(self.showFav)
+	def showFav(self):
+		# not complected, download has some bugs, the url of song_id = 0 is unable to open
+		db = pymysql.connect("localhost", "root", "", "music")
+		cursor = db.cursor()
+		cursor.execute('select song_id from usersong where username = %s', user)
+		data = cursor.fetchall()
+		for i in data:
+			cursor.execute('select song_name,song_addr from song where song_id = %s',i[0])
+
+			data = cursor.fetchone()
+			f = requests.get(data[1])
+
+			with open(data[0], "wb") as code:
+				code.write(f.content)
+		db.close()
+		self.cur_path = 'resources/song'
+		if self.cur_path:
+			self.music_list.clear()
+			for song in os.listdir(self.cur_path):
+				if song.split('.')[-1] in self.song_formats:
+					self.song_list.append([song, os.path.join(self.cur_path, song).replace('\\', '/')])
+					self.music_list.addItem(song)
+			self.music_list.setCurrentRow(0)
+			if self.song_list:
+				self.cur_song = self.song_list[self.music_list.currentRow()][-1]
+			self.setCurrentSong()
+			self.label.setText('00:00')
+			self.label_2.setText('00:00')
+			self.horizontalSlider.setSliderPosition(0)
+			self.is_pause = True
+			self.play_btn.setText('Play')
+	def addFav(self):
+		song = self.search_list.currentItem().text()
+		db = pymysql.connect("localhost", "root", "", "music")
+		cursor = db.cursor()
+		cursor.execute('select song_id from song where song_name = %s', song)
+		data = cursor.fetchone()
+
+		if data and user:
+			cursor.execute('insert into usersong(username,song_id) value(%s,%s)',(user,data[0]))
+			db.commit()
+		db.close()
+	def search(self):
+		self.search_list.clear()
+		song_name = self.search_bar.text()
+		if song_name != '':
+			db = pymysql.connect("localhost", "root", "", "music")
+			cursor = db.cursor()
+			cursor.execute('select song_name from song where song_name = %s', song_name)
+			data = cursor.fetchone()
+			print(data)
+			if data:
+				self.search_list.addItem(song_name)
+			db.close()
+			return
 
 	def doubleClickPlay(self):
 		self.horizontalSlider.setValue(0)
